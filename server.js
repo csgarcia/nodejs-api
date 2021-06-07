@@ -6,6 +6,8 @@ const express = require('express');
 const parser = require('body-parser');
 const app = express();
 const { PORT } = process.env;
+const allRoutes = require('./routes');
+// const requestValidator = require('express-validator');
 
 // parse application/x-www-form-urlencoded
 app.use(parser.urlencoded({ extended: false }));
@@ -16,7 +18,11 @@ app.use(parser.json());
 
 // add extensions for DB
 
+// add express validator
+// app.use(requestValidator());
+
 // add services
+app.use(allRoutes);
 
 // check route - this is optional
 app.get('/', (req, res) => {
