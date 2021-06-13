@@ -1,4 +1,6 @@
-const constants = require('../../utils/constants')
+const {
+    constants
+} = require('../../utils');
 
 // add dependencies on services
 module.exports = (dependencies) => {
