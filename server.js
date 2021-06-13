@@ -17,6 +17,7 @@ app.use(parser.json());
 // add logger
 
 // add extensions for DB
+require('./db')
 
 // add express validator
 // app.use(requestValidator());
