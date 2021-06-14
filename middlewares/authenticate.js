@@ -5,6 +5,8 @@ async function isAuthenticated(req, res, next) {
 
 async function isAdmin(req, res, next) {
     // if you want more middlewares add like this one
+    console.log("Checking for admin token");
+    next();
 };
 
 module.exports = {

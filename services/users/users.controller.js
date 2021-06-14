@@ -10,6 +10,25 @@ const Users = require('./users.schema');
 const loginModel = require('./users.services');
 loginModel({ Users });
 
+async function createController(req, res) {
+    try {
+        const requestValidationErrors = validationResult(req);
+        if (!requestValidationErrors.isEmpty()) {
+            return response(res, false, 400, "Error in request params", {},
+                requestValidationErrors.array());
+        }
+        const { user, password, name, lastName } = req.body;
+        const createResponse = await loginModel.create(user, password, name, lastName);
+        if (!createResponse.success) {
+            return response(res, false, createResponse.code || 400, createResponse.message);
+        }
+        return response(res, true, 200, "ok", {});
+    } catch (e) {
+        console.error(e);
+        return response(res, false, 500, `Error detected on create, ${e.message}`);
+    }
+}
+
 /**
  * Controller to manage login request
  * @param {*} req 
@@ -36,5 +55,6 @@ async function loginController(req, res) {
 };
 
 module.exports = {
+    createController,
     loginController
 };
