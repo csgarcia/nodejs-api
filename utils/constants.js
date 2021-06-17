@@ -6,7 +6,11 @@ module.exports = {
         },
         USER_NOT_FOUND: {
             code: 404,
-            message: "User not found for passed credentials."
+            message: "User not found"
+        },
+        INVALID_CREDENTIALS: {
+            code: 403,
+            message: "Invalid Credentials."
         },
         INACTIVE_USER: {
             code: 401,

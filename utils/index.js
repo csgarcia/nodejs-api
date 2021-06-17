@@ -1,7 +1,9 @@
-const response = require('./response');
+const formatResponse = require('./response');
 const constants = require('./constants');
+const encrypt = require('./encrypt');
 
 module.exports = {
-    response,
-    constants
+    formatResponse,
+    constants,
+    encrypt
 };

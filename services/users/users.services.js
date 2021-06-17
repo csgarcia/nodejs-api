@@ -23,11 +23,11 @@ module.exports = (dependencies) => {
                     message: constants.LOGIN.MISSING_PARAMS.message
                 }
             }
-            const { Users } = dependencies;
+            const { Users, encrypt } = dependencies;
             //check if user exists with mongoose schema and save user
             const result = await Users.create({
                 user,
-                password,
+                password: encrypt.encryptValue(password),
                 name,
                 lastName
             });
@@ -62,13 +62,21 @@ module.exports = (dependencies) => {
                 }
             }
             // Use whatever method 
-            const { Users } = dependencies;
-            const userInfo = await Users.findOne({ user, password });
+            const { Users, encrypt } = dependencies;
+            const userInfo = await Users.findOne({ user });
             if (!userInfo) {
                 return {
                     success: false,
                     code: constants.LOGIN.USER_NOT_FOUND.code,
                     message: constants.LOGIN.USER_NOT_FOUND.message
+                }
+            }
+            const isSamePassword = encrypt.compareEncryptValue(password, userInfo.password);
+            if (!isSamePassword) {
+                return {
+                    success: false,
+                    code: constants.LOGIN.INVALID_CREDENTIALS.code,
+                    message: constants.LOGIN.INVALID_CREDENTIALS.message
                 }
             }
             if (!userInfo.active) {
@@ -78,11 +86,14 @@ module.exports = (dependencies) => {
                     message: constants.LOGIN.INACTIVE_USER.message
                 }
             }
+
+            const apiToken = encrypt.getApiToken({ user });
+
             return {
                 success: true,
                 data: {
                     name: userInfo.name,
-                    token: ""
+                    token: apiToken
                 }
             }
         } catch (error) {

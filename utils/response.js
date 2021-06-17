@@ -7,7 +7,7 @@
  * @param {Object} data
  * @param {Object[]} errors
  */
-function response(res, success, httpCode, message, data = {}, errors = []) {
+function formatResponse(res, success, httpCode, message, data = {}, errors = []) {
     let jsonResponse = {
         success,
         code: httpCode,
@@ -21,4 +21,4 @@ function response(res, success, httpCode, message, data = {}, errors = []) {
     res.status(httpCode).json(jsonResponse);
 }
 
-module.exports = response;
+module.exports = formatResponse;
