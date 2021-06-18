@@ -27,6 +27,7 @@ mongoose.connection.on('disconnected', () => {
     console.error('MongoDB disconnected');
 });
 
-mongoose.set('useCreateIndex', true); // to avoid warning (node:2529) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
+// to avoid warning (node:2529) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
+mongoose.set('useCreateIndex', true);
 
 module.exports = mongoose;

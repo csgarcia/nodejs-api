@@ -28,6 +28,10 @@ function compareEncryptValue(value, encryptedValue) {
  * @returns 
  */
 function getApiToken(data) {
+    if (!process.env.ISSUER || !process.env.SUBJECT || !process.env.ISSUER || !process.env.EXPIRY) {
+        console.error('Api token seeds are missing, config them first');
+        process.exit(-1);
+    }
     const options = {
         issuer: process.env.ISSUER,
         subject: process.env.SUBJECT,
@@ -38,9 +42,19 @@ function getApiToken(data) {
     return jwt.sign(data, process.env.SECRET, options);
 }
 
+/**
+ * Function to verify if token is valid
+ * @param {String} token 
+ * @returns 
+ */
+function verifyToken(token) {
+    return jwt.verify(token, process.env.SECRET);
+}
+
 
 module.exports = {
     encryptValue,
     compareEncryptValue,
-    getApiToken
+    getApiToken,
+    verifyToken
 }

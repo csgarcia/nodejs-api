@@ -6,11 +6,10 @@ const {
 } = require('./users.controller');
 
 const {
-    isAuthenticated,
-    isAdmin
+    isAuthenticated
 } = require('../../middlewares/authenticate');
 
-userRoutes.post('/user/create', isAdmin, [
+userRoutes.post('/user/create', isAuthenticated, [
     check('user', 'user is required for create.').not().isEmpty(),
     check('password', 'password is required for create.').not().isEmpty()
 ], createController);
