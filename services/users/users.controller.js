@@ -2,14 +2,15 @@ const { validationResult } = require('express-validator');
 
 const {
     formatResponse,
-    encrypt
+    encrypt,
+    constants
 } = require('../../utils');
 
 const Users = require('./users.schema');
 
 // include model and dependencies
-const loginModel = require('./users.services');
-loginModel({ Users, encrypt });
+const usersService = require('./users.services');
+usersService({ Users, encrypt, constants });
 
 /**
  * Function to manage create users
@@ -17,7 +18,7 @@ loginModel({ Users, encrypt });
  * @param {*} res 
  * @returns 
  */
-async function createController(req, res) {
+async function createUser(req, res) {
     try {
         const requestValidationErrors = validationResult(req);
         if (!requestValidationErrors.isEmpty()) {
@@ -25,7 +26,7 @@ async function createController(req, res) {
                 requestValidationErrors.array());
         }
         const { user, password, name, lastName } = req.body;
-        const createResponse = await loginModel.create(user, password, name, lastName);
+        const createResponse = await usersService.create(user, password, name, lastName);
         if (!createResponse.success) {
             return formatResponse(res, false, createResponse.code || 400, createResponse.message);
         }
@@ -42,7 +43,7 @@ async function createController(req, res) {
  * @param {*} res 
  * @returns 
  */
-async function loginController(req, res) {
+async function loginUser(req, res) {
     try {
         const requestValidationErrors = validationResult(req);
         if (!requestValidationErrors.isEmpty()) {
@@ -50,7 +51,7 @@ async function loginController(req, res) {
                 requestValidationErrors.array());
         }
         const { user, password } = req.body;
-        const loginResponse = await loginModel.login(user, password);
+        const loginResponse = await usersService.login(user, password);
         if (!loginResponse.success) {
             return formatResponse(res, false, loginResponse.code || 400, loginResponse.message);
         }
@@ -62,6 +63,6 @@ async function loginController(req, res) {
 };
 
 module.exports = {
-    createController,
-    loginController
+    createUser,
+    loginUser
 };

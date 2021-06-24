@@ -38,7 +38,6 @@ function getApiToken(data) {
         audience: process.env.ISSUER,
         expiresIn: process.env.EXPIRY
     };
-    console.log(options);
     return jwt.sign(data, process.env.SECRET, options);
 }
 

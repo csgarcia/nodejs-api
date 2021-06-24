@@ -1,8 +1,8 @@
 const userRoutes = require('express').Router();
 const { check } = require('express-validator');
 const {
-    createController,
-    loginController
+    createUser,
+    loginUser
 } = require('./users.controller');
 
 const {
@@ -12,11 +12,11 @@ const {
 userRoutes.post('/user/create', isAuthenticated, [
     check('user', 'user is required for create.').not().isEmpty(),
     check('password', 'password is required for create.').not().isEmpty()
-], createController);
+], createUser);
 
 userRoutes.post('/user/login', [
     check('user', 'user is required for login.').not().isEmpty(),
     check('password', 'password is required for login.').not().isEmpty()
-], loginController);
+], loginUser);
 
 module.exports = userRoutes;

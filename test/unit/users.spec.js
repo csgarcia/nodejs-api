@@ -1,4 +1,5 @@
 const userService = require('../../services/users/users.services');
+const { constants } = require('../../utils');
 
 describe('Users', () => {
 
@@ -9,7 +10,7 @@ describe('Users', () => {
             const mockPassword = "";
             const Users = jest.fn();
             const encrypt = jest.fn();
-            userService({ Users, encrypt });
+            userService({ Users, encrypt, constants });
             const response = await userService.create(mockUser, mockPassword);
             expect(response.success).toEqual(false);
             expect(response.code).toEqual(400);
@@ -25,7 +26,7 @@ describe('Users', () => {
             const encrypt = {
                 encryptValue: jest.fn().mockResolvedValue("SomeEncryptedPassword")
             };
-            userService({ Users, encrypt });
+            userService({ Users, encrypt, constants });
             const response = await userService.create(mockUser, mockPassword);
             expect(response.success).toEqual(false);
             expect(response.code).toEqual(0);
@@ -41,7 +42,7 @@ describe('Users', () => {
             const encrypt = {
                 encryptValue: jest.fn().mockResolvedValue("SomeEncryptedPassword")
             };
-            userService({ Users, encrypt });
+            userService({ Users, encrypt, constants });
             const response = await userService.create(mockUser, mockPassword);
             expect(response.success).toEqual(false);
             expect(response.code).toEqual(0);
@@ -59,7 +60,7 @@ describe('Users', () => {
             const encrypt = {
                 encryptValue: jest.fn().mockResolvedValue("SomeEncryptedPassword")
             };
-            userService({ Users, encrypt });
+            userService({ Users, encrypt, constants });
             const response = await userService.create(mockUser, mockPassword);
             expect(response.success).toEqual(true);
         });
@@ -74,7 +75,7 @@ describe('Users', () => {
             const encrypt = jest.fn();
 
             // inject mock dependencies
-            userService({ Users, encrypt });
+            userService({ Users, encrypt, constants });
 
             // exec
             const response = await userService.login(mockUser, mockPassword);
@@ -92,7 +93,7 @@ describe('Users', () => {
                 compareEncryptValue: jest.fn().mockReturnValue(true),
                 getApiToken: jest.fn()
             };
-            userService({ Users, encrypt });
+            userService({ Users, encrypt, constants });
             const response = await userService.login(mockUser, mockPassword);
             expect(response.success).toEqual(false);
             expect(response.code).toEqual(404);
@@ -114,7 +115,7 @@ describe('Users', () => {
                 compareEncryptValue: jest.fn().mockReturnValue(false),
                 getApiToken: jest.fn()
             };
-            userService({ Users, encrypt });
+            userService({ Users, encrypt, constants });
             const response = await userService.login(mockUser, mockPassword);
             expect(response.success).toEqual(false);
             expect(response.code).toEqual(403);
@@ -136,7 +137,7 @@ describe('Users', () => {
                 compareEncryptValue: jest.fn().mockReturnValue(true),
                 getApiToken: jest.fn()
             };
-            userService({ Users, encrypt });
+            userService({ Users, encrypt, constants });
             const response = await userService.login(mockUser, mockPassword);
             expect(response.success).toEqual(false);
             expect(response.code).toEqual(401);
@@ -154,7 +155,7 @@ describe('Users', () => {
                 compareEncryptValue: jest.fn().mockReturnValue(true),
                 getApiToken: jest.fn()
             };
-            userService({ Users, encrypt });
+            userService({ Users, encrypt, constants });
             const response = await userService.login(mockUser, mockPassword);
             expect(response.success).toEqual(false);
             expect(response.code).toEqual(0);
@@ -176,7 +177,7 @@ describe('Users', () => {
                 compareEncryptValue: jest.fn().mockReturnValue(true),
                 getApiToken: jest.fn().mockReturnValue("SomeGeneratedToken")
             };
-            userService({ Users, encrypt });
+            userService({ Users, encrypt, constants });
             const response = await userService.login(mockUser, mockPassword);
             expect(response.success).toEqual(true);
             expect(response.data).toHaveProperty('name');

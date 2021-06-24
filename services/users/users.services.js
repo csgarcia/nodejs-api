@@ -1,7 +1,3 @@
-const {
-    constants
-} = require('../../utils');
-
 // add dependencies on services
 module.exports = (dependencies) => {
 
@@ -15,6 +11,7 @@ module.exports = (dependencies) => {
      */
     async function create(user, password, name = "", lastName = "") {
         try {
+            const { constants } = dependencies;
             // validate params
             if (!user || !password) {
                 return {
@@ -54,6 +51,7 @@ module.exports = (dependencies) => {
      */
     async function login(user, password) {
         try {
+            const { constants } = dependencies;
             if (!user || !password) {
                 return {
                     success: false,

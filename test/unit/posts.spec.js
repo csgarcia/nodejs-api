@@ -4,4 +4,19 @@ describe('Posts', () => {
 
         });
     });
+    describe('Update', () => {
+        it('should write your tests here...', () => {
+
+        });
+    });
+    describe('Get all', () => {
+        it('should write your tests here...', () => {
+
+        });
+    });
+    describe('Get by Id', () => {
+        it('should write your tests here...', () => {
+
+        });
+    });
 });
