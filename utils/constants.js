@@ -16,5 +16,11 @@ module.exports = {
             code: 401,
             message: "User is inactive, check data with API admin."
         }
+    },
+    POSTS: {
+        MISSING_PARAMS: {
+            code: 400,
+            message: "Params [articleHead articleBody author] are required."
+        }
     }
 }

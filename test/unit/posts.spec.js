@@ -1,22 +1,76 @@
+const postService = require('../../services/posts/posts.services');
+const { constants } = require('../../utils');
+
 describe('Posts', () => {
     describe('Create', () => {
-        it('should write your tests here...', () => {
 
+        it('should return success false if article info and/or author are missing', async() => {
+            const mockData = {
+                articleHead: "",
+                articleBody: "",
+                author: ""
+            };
+            const Posts = jest.fn();
+            postService({ Posts, constants });
+            const response = await postService.create(mockData);
+            expect(response.success).toEqual(false);
+            expect(response.code).toEqual(400);
         });
-    });
-    describe('Update', () => {
-        it('should write your tests here...', () => {
 
+        it('should return success false if function expect some error', async() => {
+            const mockData = {
+                articleHead: "Some head",
+                articleBody: "Some body",
+                author: "John Rambo"
+            };
+            const Posts = {
+                create: jest.fn().mockImplementation(() => {
+                    throw new Error("Error in module");
+                })
+            }
+            postService({ Posts, constants });
+            const response = await postService.create(mockData);
+            expect(response.success).toEqual(false);
+            expect(response.code).toEqual(0);
         });
-    });
-    describe('Get all', () => {
-        it('should write your tests here...', () => {
 
+        it('should return success true if post is created correctly', async() => {
+            const mockData = {
+                articleHead: "Some head",
+                articleBody: "Some body",
+                author: "John Rambo"
+            };
+            const Posts = {
+                create: jest.fn().mockResolvedValue({
+                    _id: "someObjectId",
+                    articleHead: "Some head",
+                    articleBody: "Some body",
+                    author: "John Rambo",
+                    createdAt: "2021-06-30T06:51:55.871Z",
+                    updatedAt: "2021-06-30T06:51:55.871Z",
+                    __v: 0
+                })
+            }
+            postService({ Posts, constants });
+            const response = await postService.create(mockData);
+            expect(response.success).toEqual(true);
+            expect(response.data).toHaveProperty('_id');
         });
-    });
-    describe('Get by Id', () => {
-        it('should write your tests here...', () => {
 
-        });
     });
+    // describe('Update', () => {
+    //     it('should return success false if post id is missing', () => {
+
+    //     });
+    // });
+    // describe('Get all', () => {
+    //     it('should write your tests here...', () => {
+
+    //     });
+    // });
+    // describe('Get by Id', () => {
+    //     it('should write your tests here...', () => {
+
+    //     });
+    // });
 });
