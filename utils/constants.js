@@ -2,7 +2,7 @@ module.exports = {
     LOGIN: {
         MISSING_PARAMS: {
             code: 400,
-            message: "Params user or password are required."
+            message: "Params [user password] are required."
         },
         USER_NOT_FOUND: {
             code: 404,
@@ -21,6 +21,10 @@ module.exports = {
         MISSING_PARAMS: {
             code: 400,
             message: "Params [articleHead articleBody author] are required."
+        },
+        MISSING_POST_ID: {
+            code: 400,
+            message: "Param [id] is required."
         }
     }
 }

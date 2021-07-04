@@ -35,13 +35,61 @@ module.exports = (dependencies) => {
             return {
                 success: false,
                 code: 0,
-                message: `Error in create user, ${error.message}`
+                message: `Error in create post, ${error.message}`
             }
         }
     }
 
+    /**
+     * Service to update a post by id
+     * @param {*} id - objectId from collection Posts
+     * @param {*} data 
+     * @param {String} data.articleHead - Post header
+     * @param {String} data.articleBody - Post body for details
+     * @param {String} data.author - Post author
+     * @returns 
+     */
     async function update(id, data) {
-        // TODO write code here after tests
+        try {
+            // validate fields
+            const { constants } = dependencies;
+            if (!id) {
+                return {
+                    success: false,
+                    code: constants.POSTS.MISSING_POST_ID.code,
+                    message: constants.POSTS.MISSING_POST_ID.message
+                }
+            }
+
+            if (!data || !data.articleHead || !data.articleBody || !data.author) {
+                return {
+                    success: false,
+                    code: constants.POSTS.MISSING_PARAMS.code,
+                    message: constants.POSTS.MISSING_PARAMS.message
+                }
+            }
+
+            // update post
+            const { Posts } = dependencies;
+            const response = await Posts.findByIdAndUpdate(id, {
+                articleHead: data.articleHead,
+                articleBody: data.articleBody,
+                author: data.author
+            }, { new: true, runValidations: true });
+
+            // return response
+            return {
+                success: true,
+                data: response
+            };
+
+        } catch (error) {
+            return {
+                success: false,
+                code: 0,
+                message: `Error in update post, ${error.message}`
+            }
+        }
     }
 
     async function getAll(filters = []) {

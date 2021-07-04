@@ -58,6 +58,7 @@ describe('Posts', () => {
         });
 
     });
+
     describe('Update', () => {
         it('should return success false if post id is missing', async() => {
             const mockId = "";
