@@ -31,9 +31,9 @@ async function createUser(req, res) {
             return formatResponse(res, false, createResponse.code || 400, createResponse.message);
         }
         return formatResponse(res, true, 200, "ok", {});
-    } catch (e) {
-        console.error(e);
-        return formatResponse(res, false, 500, `Error detected on create, ${e.message}`);
+    } catch (error) {
+        console.error(error);
+        return formatResponse(res, false, 500, `Error detected on create, ${error.message}`);
     }
 }
 
@@ -56,9 +56,9 @@ async function loginUser(req, res) {
             return formatResponse(res, false, loginResponse.code || 400, loginResponse.message);
         }
         return formatResponse(res, true, 200, "ok", loginResponse.data)
-    } catch (e) {
-        console.error(e);
-        return formatResponse(res, false, 500, `Error detected on login, ${e.message}`);
+    } catch (error) {
+        console.error(error);
+        return formatResponse(res, false, 500, `Error detected on login, ${error.message}`);
     }
 };
 

@@ -41,15 +41,15 @@ module.exports = (dependencies) => {
     }
 
     async function update(id, data) {
-
+        // TODO write code here after tests
     }
 
     async function getAll(filters = []) {
-
+        // TODO write code here after tests
     }
 
     async function getById(id) {
-
+        // TODO write code here after tests
     }
 
     module.exports.create = create;

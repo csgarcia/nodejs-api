@@ -11,7 +11,6 @@ const {
     isAuthenticated
 } = require('../../middlewares/authenticate');
 
-// TODO add validations for fields
 postRoutes.post('/post/create', isAuthenticated, [], createPost);
 postRoutes.put('/post/update/:id', isAuthenticated, [], updatePost);
 postRoutes.get('/post/get-all/', isAuthenticated, [], getAllPosts);

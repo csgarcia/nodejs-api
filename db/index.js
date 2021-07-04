@@ -29,5 +29,7 @@ mongoose.connection.on('disconnected', () => {
 
 // to avoid warning (node:2529) DeprecationWarning: collection.ensureIndex is deprecated. Use createIndexes instead.
 mongoose.set('useCreateIndex', true);
+// to avoid warning (node:1262) DeprecationWarning: Mongoose: `findOneAndUpdate()` and `findOneAndDelete()` without the `useFindAndModify` option set to false are deprecated
+mongoose.set('useFindAndModify', false);
 
 module.exports = mongoose;

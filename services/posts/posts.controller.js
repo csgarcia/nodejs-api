@@ -20,11 +20,6 @@ postsService({ Posts, constants });
  */
 async function createPost(req, res) {
     try {
-        const requestValidationErrors = validationResult(req);
-        if (!requestValidationErrors.isEmpty()) {
-            return formatResponse(res, false, 400, "Error in request params", {},
-                requestValidationErrors.array());
-        }
         const { articleHead, articleBody, author } = req.body;
         const createResponse = await postsService.create({ articleHead, articleBody, author });
         if (!createResponse.success) {
@@ -32,13 +27,30 @@ async function createPost(req, res) {
         }
         return formatResponse(res, true, 200, "post created", createResponse.data);
     } catch (error) {
-        console.error(e);
-        return formatResponse(res, false, 500, `Error detected on create, ${e.message}`);
+        console.error(error);
+        return formatResponse(res, false, 500, `Error detected on create resource, ${error.message}`);
     }
 }
 
+/**
+ * Function to update post
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 async function updatePost(req, res) {
-    return formatResponse(res, true, 200, "post updated", {});
+    try {
+        const id = req.params.id || null;
+        const { articleHead, articleBody, author } = req.body;
+        const updateResponse = await postsService.update(id, { articleHead, articleBody, author });
+        if (!updateResponse.success) {
+            return formatResponse(res, false, updateResponse.code || 400, updateResponse.message, {});
+        }
+        return formatResponse(res, true, 200, "post updated", {});
+    } catch (error) {
+        console.error(error);
+        return formatResponse(res, false, 500, `Error detected on update resource, ${error.message}`);
+    }
 }
 
 async function getAllPosts(req, res) {
