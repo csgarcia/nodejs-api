@@ -25,6 +25,10 @@ module.exports = {
         MISSING_POST_ID: {
             code: 400,
             message: "Param [id] is required."
+        },
+        POST_INFO_NOT_FOUND: {
+            code: 404,
+            message: "Post info not found"
         }
     }
 }

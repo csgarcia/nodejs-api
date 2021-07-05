@@ -210,9 +210,59 @@ describe('Posts', () => {
             });
         });
     });
-    // describe('Get by Id', () => {
-    //     it('should write your tests here...', () => {
 
-    //     });
-    // });
+    describe('Get by Id', () => {
+
+        it('should return success false if post id is missing', async() => {
+            const mockId = "";
+            const Posts = jest.fn();
+            postService({ Posts, constants });
+            const response = await postService.getById(mockId);
+            expect(response.success).toEqual(false);
+            expect(response.code).toEqual(400);
+        });
+
+        it('should return success false if function expect some error', async() => {
+            const mockId = "SomePostId";
+            const Posts = {
+                findById: jest.fn().mockImplementation(() => {
+                    throw new Error('Some internal error');
+                })
+            };
+            postService({ Posts, constants });
+            const response = await postService.getById(mockId);
+            expect(response.success).toEqual(false);
+            expect(response.code).toEqual(0);
+        });
+
+        it('should return success false if post does not exists for postId passed', async() => {
+            const mockId = "somePostId";
+            const Posts = {
+                findById: jest.fn().mockResolvedValue(null)
+            };
+            postService({ Posts, constants });
+            const response = await postService.getById(mockId);
+            expect(response.success).toEqual(false);
+            expect(response.code).toEqual(404);
+        });
+
+        it('should return success true and post data for existing post data by Id', async() => {
+            const mockId = "somePostId";
+            const mockData = {
+                _id: "somePostId",
+                articleHead: "PHP API",
+                articleBody: "Some text about php api",
+                author: "J. F Kennedy"
+            };
+            const Posts = {
+                findById: jest.fn().mockResolvedValue(mockData)
+            };
+            postService({ Posts, constants });
+            const response = await postService.getById(mockId);
+            expect(response.success).toEqual(true);
+            expect(response.data).toEqual(mockData);
+        });
+
+    });
+
 });

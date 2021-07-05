@@ -69,13 +69,28 @@ async function getAllPosts(req, res) {
         return formatResponse(res, true, 200, "posts", response.data);
     } catch (error) {
         console.error(error);
-        return formatResponse(res, false, 500, `Error detected on update resource, ${error.message}`);
+        return formatResponse(res, false, 500, `Error detected on get resources, ${error.message}`);
     }
-    return formatResponse(res, true, 200, "list if posts", []);
 }
 
+/**
+ * function to get single post by id
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 async function getPostById(req, res) {
-    return formatResponse(res, true, 200, "post", {});
+    try {
+        const id = req.params.id || null;
+        const response = await postsService.getById(id);
+        if (!response.success) {
+            return formatResponse(res, false, response.code || 400, response.message, {});
+        }
+        return formatResponse(res, true, 200, "post", response.data);
+    } catch (error) {
+        console.error(error);
+        return formatResponse(res, false, 500, `Error detected on get resource, ${error.message}`);
+    }
 }
 
 module.exports = {

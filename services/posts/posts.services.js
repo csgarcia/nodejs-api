@@ -149,8 +149,45 @@ module.exports = (dependencies) => {
         return filtersForQuery;
     }
 
+    /**
+     * Function to get single post by _id
+     * @param {String} id 
+     * @returns {Object} response - info and execution results 
+     * @returns {boolean} response.success - value to check if process has errors 
+     * @returns {number} response.code - code of error, this could be an http status code 
+     * @returns {String} response.message - error message
+     * @returns {Object} response.data - post data found by id
+     */
     async function getById(id) {
-        // TODO write code here after tests
+        try {
+            const { constants } = dependencies;
+            if (!id) {
+                return {
+                    success: false,
+                    code: constants.POSTS.MISSING_POST_ID.code,
+                    message: constants.POSTS.MISSING_POST_ID.message
+                }
+            }
+            const { Posts } = dependencies;
+            const postInfo = await Posts.findById(id);
+            if (!postInfo) {
+                return {
+                    success: false,
+                    code: constants.POSTS.POST_INFO_NOT_FOUND.code,
+                    message: constants.POSTS.POST_INFO_NOT_FOUND.message
+                }
+            }
+            return {
+                success: true,
+                data: postInfo
+            }
+        } catch (error) {
+            return {
+                success: false,
+                code: 0,
+                message: `Error in get post by id, ${error.message}`
+            }
+        }
     }
 
     module.exports.create = create;
