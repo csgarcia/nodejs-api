@@ -6,7 +6,11 @@ module.exports = (dependencies) => {
      * @param {String} data.articleHead - Post header
      * @param {String} data.articleBody - Post body for details
      * @param {String} data.author - Post author
-     * @returns 
+     * @returns {Object} response - info and execution results 
+     * @returns {boolean} response.success - value to check if process has errors 
+     * @returns {number} response.code - code of error, this could be an http status code 
+     * @returns {String} response.message - error message
+     * @returns {Object} response.data - posts data
      */
     async function create(data) {
         try {
@@ -42,12 +46,16 @@ module.exports = (dependencies) => {
 
     /**
      * Service to update a post by id
-     * @param {*} id - objectId from collection Posts
-     * @param {*} data 
+     * @param {String} id - objectId from collection Posts
+     * @param {Object} data 
      * @param {String} data.articleHead - Post header
      * @param {String} data.articleBody - Post body for details
      * @param {String} data.author - Post author
-     * @returns 
+     * @returns {Object} response - info and execution results 
+     * @returns {boolean} response.success - value to check if process has errors 
+     * @returns {number} response.code - code of error, this could be an http status code 
+     * @returns {String} response.message - error message
+     * @returns {Object} response.data - posts data
      */
     async function update(id, data) {
         try {
@@ -92,8 +100,53 @@ module.exports = (dependencies) => {
         }
     }
 
+    /**
+     * function to get posts
+     * @param {Object[]} filters - Properties to filter data and posts
+     * @returns {Object} response - info and execution results 
+     * @returns {boolean} response.success - value to check if process has errors 
+     * @returns {number} response.code - code of error, this could be an http status code 
+     * @returns {String} response.message - error message
+     * @returns {Object[]} response.data - posts data
+     */
     async function getAll(filters = []) {
-        // TODO write code here after tests
+        try {
+            let filtersForQuery = buildFilters(filters);
+            const { Posts } = dependencies;
+            const response = await Posts.find(filtersForQuery);
+            return {
+                success: true,
+                data: response
+            };
+        } catch (error) {
+            return {
+                success: false,
+                code: 0,
+                message: `Error in get posts, ${error.message}`
+            }
+        }
+    }
+
+    /**
+     * Function to validate filters for Posts command.
+     * Feel free to improve this to use indexes for queries, the objetive of this
+     * function is to check the fiels to filter posts and not pass any invalid property
+     * @param {Object[]} filters - Properties to filter posts
+     * @returns {Object}
+     */
+    function buildFilters(filters = []) {
+        let filtersForQuery = {};
+        if (!filters.length) {
+            return filtersForQuery;
+        }
+        const validFilters = ['articleHead', 'articleBody', 'author'];
+        for (let i = 0; i < filters.length; i++) {
+            const currentFilter = filters[i];
+            if (validFilters.includes(currentFilter.field)) {
+                filtersForQuery[currentFilter.field] = currentFilter.value;
+            }
+        }
+        return filtersForQuery;
     }
 
     async function getById(id) {

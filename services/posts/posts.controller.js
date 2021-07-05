@@ -53,7 +53,24 @@ async function updatePost(req, res) {
     }
 }
 
+/**
+ * Function to get posts
+ * @param {*} req 
+ * @param {*} res 
+ * @returns 
+ */
 async function getAllPosts(req, res) {
+    try {
+        const fields = req.body || {};
+        const response = await postsService.getAll(fields);
+        if (!response.success) {
+            return formatResponse(res, false, response.code || 400, response.message, {});
+        }
+        return formatResponse(res, true, 200, "posts", response.data);
+    } catch (error) {
+        console.error(error);
+        return formatResponse(res, false, 500, `Error detected on update resource, ${error.message}`);
+    }
     return formatResponse(res, true, 200, "list if posts", []);
 }
 
