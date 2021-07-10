@@ -1,4 +1,5 @@
 const mongoose = require('../../db');
+const logger = require('../../config/logger');
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
@@ -19,5 +20,5 @@ const postSchema = new Schema({
 });
 
 const Posts = mongoose.model('posts', postSchema, 'posts');
-console.log("** Defining Posts schema via mongoose **");
+logger.info("** Defining Posts schema via mongoose **");
 module.exports = Posts;

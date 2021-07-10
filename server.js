@@ -7,6 +7,7 @@ const parser = require('body-parser');
 const app = express();
 const { PORT } = process.env;
 const allRoutes = require('./routes');
+const morgan = require('morgan');
 // const requestValidator = require('express-validator');
 
 // parse application/x-www-form-urlencoded
@@ -14,7 +15,14 @@ app.use(parser.urlencoded({ extended: false }));
 // parse application/json
 app.use(parser.json());
 
-// add logger
+// logger
+const logger = require('./config/logger');
+app.use(
+    morgan('dev', {
+        skip: () => app.get('env') === 'test',
+        stream: logger.stream,
+    }),
+);
 
 // add extensions for DB
 require('./db')
@@ -33,7 +41,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+    logger.info(`Server running at http://localhost:${PORT}`);
 });
 
 module.exports = app;

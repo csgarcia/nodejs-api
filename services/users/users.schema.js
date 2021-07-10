@@ -1,4 +1,5 @@
 const mongoose = require('../../db');
+const logger = require('../../config/logger');
 const Schema = mongoose.Schema;
 
 const usersSchema = new Schema({
@@ -22,5 +23,5 @@ const usersSchema = new Schema({
 });
 
 const Users = mongoose.model('users', usersSchema, 'users');
-console.log("** Defining Users schema via mongoose **");
+logger.info("** Defining Users schema via mongoose **");
 module.exports = Users;
